@@ -1,0 +1,18 @@
+@if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+    </div>
+@endif
+
+@if ($errors->any() && ! isset($hideAlertErrors))
+    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+        <strong>Periksa kembali isian Anda:</strong>
+        <ul class="mb-0 mt-1">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+    </div>
+@endif
