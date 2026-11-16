@@ -32,6 +32,11 @@
         <div class="d-grid">
             <button type="submit" class="btn btn-gray-800">Daftar</button>
         </div>
+        <div class="d-grid pt-2">
+        <a href="{{ route('google.login') }}" class="btn btn-danger">
+            Login dengan Google
+        </a>
+    </div>
     </form>
     <div class="text-center mt-4">
         <span class="fw-normal">Sudah punya akun? <a href="{{ route('login') }}" class="fw-bold">Login</a></span>

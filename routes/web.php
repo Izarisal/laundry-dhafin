@@ -55,3 +55,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('user', UserController::class)->except('show');
     });
 });
+
+// FITUR LOGIN GOOGLE 
+use App\Http\Controllers\GoogleAuthController;
+
+Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('google.login');
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
