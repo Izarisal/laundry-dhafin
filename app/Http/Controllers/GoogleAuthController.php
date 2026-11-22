@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
 use Exception;
 
 class GoogleAuthController extends Controller
@@ -21,33 +22,31 @@ class GoogleAuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
 
-            // Cek apakah user dengan email atau google_id ini sudah ada di database
             $user = User::where('google_id', $googleUser->getId())
                         ->orWhere('email', $googleUser->getEmail())
                         ->first();
 
             if ($user) {
-                // Jika user sudah ada (misal dari dummy account yang emailnya sama), update google_id-nya
                 if (!$user->google_id) {
                     $user->update(['google_id' => $googleUser->getId()]);
                 }
             } else {
-                // Jika belum ada sama sekali, otomatis buatkan akun baru
                 $user = User::create([
                     'name' => $googleUser->getName(),
                     'email' => $googleUser->getEmail(),
                     'google_id' => $googleUser->getId(),
-                    // Password dikosongkan karena login via Google
+                    'password' => bcrypt(str::random(16)), 
+                    'role' => User::ROLE_PELANGGAN ?? 'pelanggan', // Menyesuaikan dengan konstanta role di model User kamu
                 ]);
             }
 
-            // Login-kan user ke dalam sistem session Laravel kamu
             Auth::login($user);
 
-            // Arahkan ke halaman dashboard/home milikmu
             return redirect()->intended('/dashboard');
 
         } catch (Exception $e) {
+            // Jika ingin melihat pesan error aslinya sementara waktu, ubah return redirect ini menjadi:
+            dd($e->getMessage());
             return redirect('/login')->with('error', 'Gagal login menggunakan Google: ' . $e->getMessage());
         }
     }
