@@ -7,6 +7,8 @@ use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
+// FITUR LOGIN GOOGLE 
+use App\Http\Controllers\GoogleAuthController;
 use Illuminate\Support\Facades\Route;
 
 // Halaman awal -> dashboard (jika belum login otomatis dialihkan ke login)
@@ -56,8 +58,6 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-// FITUR LOGIN GOOGLE 
-use App\Http\Controllers\GoogleAuthController;
 
 Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('google.login');
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
